@@ -29,6 +29,14 @@ server.route({
 });
 
 server.route({
+  method: 'GET',
+  path: '/fetch',
+  handler: function(req, reply) {
+    reply.file('fetcher/index.html');
+  }
+});
+
+server.route({
     method: 'POST',
     path: '/svg',
     config: {
