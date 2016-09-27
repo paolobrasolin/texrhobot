@@ -30,7 +30,7 @@ server.route({
 
 server.route({
     method: 'POST',
-    path: '/pdf',
+    path: '/svg',
     config: {
         handler: function(req, reply) {
 
