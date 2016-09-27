@@ -1,0 +1,26 @@
+{
+  "name": "texrhobot",
+  "version": "0.0.0",
+  "description": "*TeX* compilation REST service",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paolobrasolin/texrhobot.git"
+  },
+  "author": "Paolo Brasolin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paolobrasolin/texrhobot/issues"
+  },
+  "homepage": "https://github.com/paolobrasolin/texrhobot#readme",
+  "dependencies": {
+    "hapi": "^15.1.1",
+    "inert": "^4.0.2",
+    "s3": "^4.4.0",
+    "yamljs": "^0.2.8"
+  }
+}
