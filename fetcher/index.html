@@ -9,12 +9,8 @@
 <body>
   <div id="placeholder"></div>
 <script type="text/javascript">
-$.ajax({
-  type: "POST",
-  url: "https://texrhobot.herokuapp.com/svg",
-  data: {"body": "Hello world!"},
-  success: function(result){console.log(result)}
-}).done(function() {
+$.post( "https://texrhobot.herokuapp.com/svg", {"body": "Hello world!"})
+  .done(function() {
     alert( "second success" );
   })
   .fail(function(err) {
