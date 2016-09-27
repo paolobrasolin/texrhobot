@@ -49,13 +49,13 @@ server.route({
                 `--output=tex_cache/${hash}.tex`
             ]);
 
-            // pandoc.stdout.on('data', (data) => {
-                // console.log(`stdout: ${data}`);
-            // });
+            pandoc.stdout.on('data', (data) => {
+                console.log(`stdout: ${data}`);
+            });
 
-            // pandoc.stderr.on('data', (data) => {
-                // console.log(`stderr: ${data}`);
-            // });
+            pandoc.stderr.on('data', (data) => {
+                console.log(`stderr: ${data}`);
+            });
 
             var latex = ChildProcess.spawn('latex', [
                 `${hash}.tex`,
@@ -63,13 +63,13 @@ server.route({
                 cwd: 'tex_cache'
             });
 
-            // latex.stdout.on('data', (data) => {
-                // console.log(`stdout: ${data}`);
-            // });
+            latex.stdout.on('data', (data) => {
+                console.log(`stdout: ${data}`);
+            });
 
-            // latex.stderr.on('data', (data) => {
-                // console.log(`stderr: ${data}`);
-            // });
+            latex.stderr.on('data', (data) => {
+                console.log(`stderr: ${data}`);
+            });
 
             var dvisvgm = ChildProcess.spawn('dvisvgm', [
                 `${hash}.dvi`,
@@ -79,13 +79,13 @@ server.route({
                 cwd: 'tex_cache'
             });
 
-            // dvisvgm.stdout.on('data', (data) => {
-                // console.log(`stdout: ${data}`);
-            // });
+            dvisvgm.stdout.on('data', (data) => {
+                console.log(`stdout: ${data}`);
+            });
 
-            // dvisvgm.stderr.on('data', (data) => {
-                // console.log(`stderr: ${data}`);
-            // });
+            dvisvgm.stderr.on('data', (data) => {
+                console.log(`stderr: ${data}`);
+            });
 
             pandoc.on('close', (code) => {
                 console.log(`pandoc exited with code ${code}`);
