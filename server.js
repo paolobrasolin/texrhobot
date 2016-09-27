@@ -7,8 +7,10 @@ const Inert = require('inert');
 
 const YAML = require('yamljs');
 const fs = require('fs');
+const MD5 = require('md5');
 
-
+const mkdirp = require('mkdirp');
+mkdirp('tex_cache');
 
 const server = new Hapi.Server();
 server.connection({
@@ -19,10 +21,10 @@ server.register(Inert, () => {});
 
 
 server.route({
-  method: 'GET'
-, path: '/'
-, handler: function(req, reply) {
-    reply("hello world");
+  method: 'GET',
+  path: '/',
+  handler: function(req, reply) {
+    reply('texϱbot');
   }
 });
 
@@ -33,27 +35,73 @@ server.route({
         handler: function(req, reply) {
 
             var yaml = YAML.stringify(req.payload);
-            fs.writeFile('metadata.yaml', `---\n${yaml}...`, function (err, data){});
+            var hash = MD5(yaml);
 
-            var ls = ChildProcess.spawn('pandoc', [
-                'metadata.yaml',
+            fs.writeFile(
+                `tex_cache/${hash}.yml`,
+                `---\n${yaml}...`,
+                function (err, data){}
+            );
+
+            var pandoc = ChildProcess.spawn('pandoc', [
+                `tex_cache/${hash}.yml`,
                 '--template=template.tex',
-                '--output=test.pdf'
+                `--output=tex_cache/${hash}.tex`
             ]);
 
-            ls.stdout.on('data', (data) => {
-            console.log(`stdout: ${data}`);
+            // pandoc.stdout.on('data', (data) => {
+                // console.log(`stdout: ${data}`);
+            // });
+
+            // pandoc.stderr.on('data', (data) => {
+                // console.log(`stderr: ${data}`);
+            // });
+
+            var latex = ChildProcess.spawn('latex', [
+                `${hash}.tex`,
+            ], {
+                cwd: 'tex_cache'
             });
 
-            ls.stderr.on('data', (data) => {
-            console.log(`stderr: ${data}`);
+            // latex.stdout.on('data', (data) => {
+                // console.log(`stdout: ${data}`);
+            // });
+
+            // latex.stderr.on('data', (data) => {
+                // console.log(`stderr: ${data}`);
+            // });
+
+            var dvisvgm = ChildProcess.spawn('dvisvgm', [
+                `${hash}.dvi`,
+                '--no-fonts'
+                // '--zip'
+            ], {
+                cwd: 'tex_cache'
             });
 
-            ls.on('close', (code) => {
-                console.log(`child process exited with code ${code}`);
-                reply.file("test.pdf");
+            // dvisvgm.stdout.on('data', (data) => {
+                // console.log(`stdout: ${data}`);
+            // });
 
+            // dvisvgm.stderr.on('data', (data) => {
+                // console.log(`stderr: ${data}`);
+            // });
+
+            pandoc.on('close', (code) => {
+                console.log(`pandoc exited with code ${code}`);
+                    latex.on('close', (code) => {
+                        console.log(`latex exited with code ${code}`);
+                            dvisvgm.on('close', (code) => {
+                                console.log(`dvisvgm exited with code ${code}`);
+                                reply.file(`tex_cache/${hash}.svg`);
+                            });
+                    });
             });
+
+
+
+
+
 
         }
   // , validate: {
