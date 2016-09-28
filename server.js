@@ -17,7 +17,10 @@ require('shelljs/global');
 const server = new Hapi.Server();
 server.connection({
     port: ~~process.env.PORT || 3000,
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    routes: {
+        cors: true
+    }
 });
 server.register(Inert, () => {});
 
@@ -42,7 +45,13 @@ server.route({
     method: 'POST',
     path: '/svg',
     config: {
+        cors: {
+            origin: ['*'],
+            additionalHeaders: ['cache-control', 'x-requested-with']
+        },
         handler: function(req, reply) {
+
+            console.log(req);
 
             console.log(req.payload);
 
