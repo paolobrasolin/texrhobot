@@ -43,8 +43,8 @@ server.route({
     path: '/svg',
     config: {
         cors: {
-            origin: ['*']//,
-            // additionalHeaders: ['cache-control', 'x-requested-with']
+            origin: ['*'],
+            additionalHeaders: ['cache-control', 'x-requested-with']
         },
         handler: function(req, reply) {
 
