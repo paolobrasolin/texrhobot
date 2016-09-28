@@ -58,12 +58,13 @@ server.route({
             var yaml = YAML.stringify(req.payload);
             var hash = MD5(yaml);
 
-            fs.writeFile(
+            fs.writeFileSync(
                 `tex_cache/${hash}.yml`,
                 `---\n${yaml}...`
             );
 
-            exec(`pandoc ${hash}.yml --template=../template.tex --output=${hash}.tex`,{cwd: 'tex_cache'});
+            exec(`pandoc ${hash}.yml --template=../template.tex`
+                +` --output=${hash}.tex`,{cwd: 'tex_cache'});
             exec(`latex ${hash}.tex`,{cwd: 'tex_cache'});
             exec(`dvisvgm ${hash}.dvi --no-fonts`,{cwd: 'tex_cache'});
             reply.file(`tex_cache/${hash}.svg`);
