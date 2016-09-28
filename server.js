@@ -1,6 +1,6 @@
 'use strict';
 
-const ChildProcess = require('child_process');
+// const ChildProcess = require('child_process');
 
 const Hapi = require('hapi');
 const Inert = require('inert');
@@ -29,15 +29,7 @@ server.route({
   method: 'GET',
   path: '/',
   handler: function(req, reply) {
-    reply('texϱbot');
-  }
-});
-
-server.route({
-  method: 'GET',
-  path: '/fetch',
-  handler: function(req, reply) {
-    reply.file('fetcher/index.html');
+    reply.file('index.html');
   }
 });
 
@@ -49,13 +41,11 @@ server.route({
             origin: ['*'],
             additionalHeaders: ['cache-control', 'x-requested-with']
         },
-        handler: function(req, reply) {
+        handler: function(request, reply) {
 
-            console.log(req);
+            console.log(request.payload);
 
-            console.log(req.payload);
-
-            var yaml = YAML.stringify(req.payload);
+            var yaml = YAML.stringify(request.payload);
             var hash = MD5(yaml);
 
             fs.writeFileSync(
@@ -63,25 +53,48 @@ server.route({
                 `---\n${yaml}...`
             );
 
-            exec(`pandoc ${hash}.yml --template=../template.tex`
-                +` --output=${hash}.tex`,{cwd: 'tex_cache'});
-            exec(`latex ${hash}.tex`,{cwd: 'tex_cache'});
-            exec(`dvisvgm ${hash}.dvi --no-fonts`,{cwd: 'tex_cache'});
-            reply.file(`tex_cache/${hash}.svg`);
+            var pandoc = exec([
+                    'pandoc',
+                    `${hash}.yml`,
+                    '--template=../template.tex',
+                    `--output=${hash}.tex`
+                ].join(' '),
+                {cwd: 'tex_cache'});
 
+            if (pandoc.code !== 0) {
+                return reply("pandoc failed");
+            }
 
+            var latex = exec([
+                    'latex',
+                    '-interaction=batchmode',
+                    `${hash}.tex`
+                ].join(' '),
+                {cwd: 'tex_cache'});
 
+            if (latex.code !== 0) {
+                return reply("latex failed");
+            }
 
+            var dvisvgm = exec([
+                    'dvisvgm',
+                    `${hash}.dvi`,
+                    '--no-fonts'
+                ].join(' '),
+                {cwd: 'tex_cache'});
 
+            if (dvisvgm.code !== 0) {
+                return reply("dvisvgm failed");
+            }
 
-        }
-  // , validate: {
-      // payload: {
-        // author: Hapi.types.String().required()
-      // , text: Hapi.types.String().required()
-      // }
-    // }
-  }
+            return reply.file(`tex_cache/${hash}.svg`);
+        },
+        // validate: {
+            // payload: {
+                // document: Hapi.types.String().required()
+            // }
+        // }
+    }
 });
 
 // Start the server
