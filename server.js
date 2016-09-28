@@ -18,9 +18,6 @@ const server = new Hapi.Server();
 server.connection({
     port: ~~process.env.PORT || 3000,
     host: '0.0.0.0',
-    routes: {
-        cors: true
-    }
 });
 server.register(Inert, () => {});
 
@@ -46,8 +43,8 @@ server.route({
     path: '/svg',
     config: {
         cors: {
-            origin: ['*'],
-            additionalHeaders: ['cache-control', 'x-requested-with']
+            origin: ['*']//,
+            // additionalHeaders: ['cache-control', 'x-requested-with']
         },
         handler: function(req, reply) {
 
