@@ -17,7 +17,7 @@ cp('kodi.fmt', 'tex_cache');
 
 exec([
         'unzip',
-        '-oj'.
+        '-oj',
         'kodi.zip',
         '-d',
         'tex_cache'
