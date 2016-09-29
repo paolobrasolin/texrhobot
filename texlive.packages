@@ -1,4 +1,4 @@
 dvisvgm
 standalone
 xkeyval
-tikz
+pgf
