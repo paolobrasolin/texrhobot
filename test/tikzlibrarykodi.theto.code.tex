@@ -1,0 +1,100 @@
+%% 
+%% Copyright 2016
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   <http://www.latex-project.org/lppl.txt>
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `'.
+% 
+% The Current Maintainer of this work is 
+% which can be contacted at <>.
+%
+% This work consists of the following files:
+
+%   - 1
+
+%   - 2
+
+%   - 3
+
+%
+%=====[ θέτω (théto) ]=====================================================
+
+% This module implements an alternative parsing mechanism
+% for TiKz matrices of nodes.
+
+\catcode`@ = 11
+
+\tikzset{
+    math/.style={
+        execute at begin node=$,
+        execute at end node=$,
+    },
+    monk/.style={
+        matrix,
+        cells={anchor=base},
+        execute at begin cell=\kDMatrixBeginCell,
+        execute at empty cell=\kDMatrixEmptyCell,
+        nodes={
+            self naming,
+            math,
+        },
+    },
+    %: MEMO: this *cannot* be put along with global node styles (because order of execution)
+    matrix coordinates alias/.style={
+        alias=\tikzmatrixname-\the\pgfmatrixcurrentrow-\the\pgfmatrixcurrentcolumn,
+    },
+}
+
+% TODO: recheck the following
+\def\kDMatrixNil{\relax}
+% If this is made a no-op then bugs emerge:
+%     1. empty cell at line end on last line crashes everything
+%     2. empty cell at line end on other lines gets duplicated
+% I am not 100% aware of why, so this feels like a dirty hack.
+
+\def\kDMatrixNewLine{
+    \pgfutil@ifnextchar\kDMatrixNil
+        {\expandafter\pgfmatrixendrow\pgfutil@gobble}
+        {\pgfmatrixendrow}
+}
+
+\def\kDMatrixBeginCell{
+    \let\\\kDMatrixNewLine
+    \pgfutil@ifnextchar\relax{}{\kDMatrixDoRow}
+}
+
+\bgroup
+\catcode`&=\active
+
+\gdef\kDMatrixDoRow#1\\{
+    \pgfutil@ifnextchar\kDMatrixNil
+        {\kDMatrixDoCell #1\\}
+        {\kDMatrixDoCell #1&\kDMatrixNil\\\kDMatrixNil}
+}
+
+\gdef\kDMatrixDoCell#1&{
+  \kDMatrixParseNodeMaybeOptions#1\kDRelax
+  \pgfutil@ifnextchar\kDMatrixNil{\pgfutil@gobble}{&}
+}
+
+\egroup
+
+\def\kDMatrixParseNodeMaybeOptions%
+    {\pgfutil@ifnextchar|{\kDMatrixParseNodeWithOptions}{\kDMatrixParseNodeWithOptions||}}
+
+% TODO: here the ordering of naming/aliasing procedures is crucial and subtle
+%       maybe write a nota about that someday, ok? ok.
+\def\kDMatrixParseNodeWithOptions|#1|#2\kDRelax%
+    {\node#1[node contents={#2},matrix coordinates alias];}
+
+\def\kDMatrixEmptyCell%
+    {\kDMatrixParseNodeWithOptions||\kDRelax}
+
+\catcode`@ = 12
+
