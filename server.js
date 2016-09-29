@@ -14,6 +14,14 @@ mkdirp('tex_cache');
 
 require('shelljs/global');
 
+exec([
+        'unzip',
+        '-oj',
+        'kodi.zip',
+        '-d',
+        'tex_cache',
+    ].join(' '));
+
 const server = new Hapi.Server();
 server.connection({
     port: ~~process.env.PORT || 3000,
