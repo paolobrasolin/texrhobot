@@ -13,6 +13,7 @@ const mkdirp = require('mkdirp');
 mkdirp('tex_cache');
 
 require('shelljs/global');
+cp('kodi.fmt', 'tex_cache');
 
 const server = new Hapi.Server();
 server.connection({
