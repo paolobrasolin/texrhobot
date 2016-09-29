@@ -13,15 +13,6 @@ const mkdirp = require('mkdirp');
 mkdirp('tex_cache');
 
 require('shelljs/global');
-cp('kodi.fmt', 'tex_cache');
-
-exec([
-        'unzip',
-        '-oj',
-        'kodi.zip',
-        '-d',
-        'tex_cache'
-    ].join(' '));
 
 const server = new Hapi.Server();
 server.connection({
@@ -76,7 +67,7 @@ server.route({
 
             var latex = exec([
                     'latex',
-                    '-interaction=batchmode',
+                    '-interaction=nonstopmode',
                     `${hash}.tex`
                 ].join(' '),
                 {cwd: 'tex_cache'});
