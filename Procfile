@@ -1,1 +1,1 @@
-web: node server.js
+web: bundle exec rackup config.ru -p $PORT
