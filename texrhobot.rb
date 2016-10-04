@@ -14,7 +14,7 @@ before do
   # content_type :json
 end
 
-post '/' do
+get '/' do
   send_file 'index.html'
 end
 
