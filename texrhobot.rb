@@ -8,13 +8,20 @@ FileUtils.mkdir_p CACHE_DIR
 FileUtils.cp Dir['*.fmt'], CACHE_DIR
 
 before do
-  headers['Access-Control-Allow-Origin'] = '*'
+  # headers['Access-Control-Allow-Origin'] = '*'
   # headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
   # headers['Access-Control-Allow-Headers'] = 'accept, authorization, origin'
   # content_type :json
 end
 
+post '/' do
+  send_file 'index.html'
+end
+
+
 post '/crank' do
+  headers['Access-Control-Allow-Origin'] = '*'
+
   @yaml = params.to_yaml
   @hash = Digest::MD5.hexdigest(@yaml)
   File.open("#{CACHE_DIR}/#{@hash}.yaml", 'w') do |file|
