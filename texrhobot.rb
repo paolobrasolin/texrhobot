@@ -14,7 +14,7 @@ before do
   # content_type :json
 end
 
-post '/' do
+post '/crank' do
   @yaml = params.to_yaml
   @hash = Digest::MD5.hexdigest(@yaml)
   File.open("#{CACHE_DIR}/#{@hash}.yaml", 'w') do |file|
