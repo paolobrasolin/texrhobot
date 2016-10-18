@@ -1,0 +1,96 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=kodi-livedemo 2016.10.19)  19 OCT 2016 01:13
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**latex-minimal.tex
+(./latex-minimal.tex
+LaTeX2e <2016/03/31> patch level 3
+Babel <3.9r> and hyphenation patterns for 83 language(s) loaded.
+(./latex-minimal.aux)
+\openout1 = `latex-minimal.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 2.
+ (/texlive/2016/texmf-dist/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+ABD: EveryShipout initializing macros
+Missing character: There is no P in font nullfont!
+
+kD.katharizo        > {A \times _Z B} -> (A times _Z B)
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 6.
+(/texlive/2016/texmf-dist/tex/latex/lm/ot1lmr.fd
+File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 6.
+
+(/texlive/2016/texmf-dist/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 6.
+
+(/texlive/2016/texmf-dist/tex/latex/lm/omslmsy.fd
+File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 6.
+
+(/texlive/2016/texmf-dist/tex/latex/lm/omxlmex.fd
+File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              
+<10> on input line 6.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              
+<7> on input line 6.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              
+<5> on input line 6.
+LaTeX Font Info:    Try loading font information for U+msa on input line 6.
+
+(/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 6.
+
+(/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+kD.katharizo        > {B} -> (B)
+kD.katharizo        > {A} -> (A)
+kD.katharizo        > {Z} -> (Z)
+kD.katharizo        > {Q} -> (Q)
+kD.katharizo        > {p_1} -> (p_1)
+kD.katharizo        > {f} -> (f)
+Missing character: There is no ; in font nullfont!
+kD.katharizo        > {P_2} -> (P_2)
+kD.katharizo        > {g} -> (g)
+Missing character: There is no ; in font nullfont!
+kD.katharizo        > {q_1} -> (q_1)
+Missing character: There is no ; in font nullfont!
+kD.katharizo        > {q_2} -> (q_2)
+Missing character: There is no ; in font nullfont!
+kD.katharizo        > {u} -> (u)
+Missing character: There is no ; in font nullfont!
+[1] (./latex-minimal.aux) ) 
+Here is how much of TeX's memory you used:
+ 380 strings out of 479226
+ 8365 string characters out of 5853766
+ 320254 words of memory out of 5000000
+ 17394 multiletter control sequences out of 15000+600000
+ 19648 words of font info for 32 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 63i,14n,117p,179b,914s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on latex-minimal.dvi (1 page, 10236 bytes).

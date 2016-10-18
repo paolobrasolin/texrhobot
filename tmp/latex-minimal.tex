@@ -1,0 +1,20 @@
+%&kodi-livedemo
+\begin{document}
+\begin{tikzpicture}[kodi]
+
+\lay[comb]{
+  |(P)| A \times_Z B & B \\
+        A            & Z \\
+};
+
+\obj at ($(Z)!2!(P)$) {Q};
+
+\mor[swap] P p_1:-> A f:-> Z;
+\mor       P P_2:-> B g:-> Z;
+
+\mor[swap]:[bend right] Q q_1:-> A;
+\mor      :[bend left]  Q q_2:-> B;
+\mor [mid]:[dashed]     Q   u:-> P;
+
+\end{tikzpicture}
+\end{document}
