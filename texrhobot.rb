@@ -1,18 +1,19 @@
 require 'sinatra'
+require 'tmpdir'
 require 'open3'
 require 'json'
 require 'yaml'
 
-TMP_DIR = '.cache'.freeze # cache folder
-TPL_DIR = 'templates'.freeze # templates folder
-FMT_DIR = 'formats'.freeze # formats folder
+TEXRHOBOT_CACHE_DIR     = ENV.fetch 'TEXRHOBOT_CACHE_DIR'
+TEXRHOBOT_FORMATS_DIR   = ENV.fetch 'TEXRHOBOT_FORMATS_DIR'
+TEXRHOBOT_TEMPLATES_DIR = ENV.fetch 'TEXRHOBOT_TEMPLATES_DIR'
+
+FileUtils.mkdir_p TEXRHOBOT_CACHE_DIR
+FileUtils.cp Dir["#{TEXRHOBOT_FORMATS_DIR}/*.fmt"], TEXRHOBOT_CACHE_DIR
 
 def offset_line_numbers(tex_log, offset)
   tex_log.gsub(/^l.(\d+)(.*)$/) { "l.#{$1.to_i + offset}" + $2 }
 end
-
-FileUtils.mkdir_p TMP_DIR
-FileUtils.cp Dir["#{FMT_DIR}/*.fmt"], TMP_DIR
 
 get '/' do
   send_file 'index.html'
@@ -23,12 +24,12 @@ post '/crank' do
 
   @yaml = params.to_yaml
   @hash = Digest::MD5.hexdigest(@yaml)
-  File.open("#{TMP_DIR}/#{@hash}.yaml", 'w').write(@yaml)
+  File.open("#{TEXRHOBOT_CACHE_DIR}/#{@hash}.yaml", 'w').write(@yaml)
 
-  renderer = ERB.new(File.read("#{TPL_DIR}/#{params['template']}.tex.erb"), 0, '<>')
-  File.write("#{TMP_DIR}/#{@hash}.tex", renderer.result(binding))
+  renderer = ERB.new(File.read("#{TEXRHOBOT_TEMPLATES_DIR}/#{params['template']}.tex.erb"), 0, '<>')
+  File.write("#{TEXRHOBOT_CACHE_DIR}/#{@hash}.tex", renderer.result(binding))
 
-  Dir.chdir TMP_DIR do
+  Dir.chdir TEXRHOBOT_CACHE_DIR do
     stdout, _stderr, status = Open3.capture3(
       'texfot', 'pdftex', @hash
     )
@@ -41,5 +42,5 @@ post '/crank' do
   end
 
   content_type :svg
-  halt 200, File.read("#{TMP_DIR}/#{@hash}.svg")
+  halt 200, File.read("#{TEXRHOBOT_CACHE_DIR}/#{@hash}.svg")
 end
