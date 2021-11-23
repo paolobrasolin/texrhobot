@@ -4,9 +4,9 @@ require 'open3'
 require 'json'
 require 'yaml'
 
-TEXRHOBOT_CACHE_DIR     = ENV.fetch 'TEXRHOBOT_CACHE_DIR'
-TEXRHOBOT_FORMATS_DIR   = ENV.fetch 'TEXRHOBOT_FORMATS_DIR'
-TEXRHOBOT_TEMPLATES_DIR = ENV.fetch 'TEXRHOBOT_TEMPLATES_DIR'
+TEXRHOBOT_CACHE_DIR     = ENV.fetch('TEXRHOBOT_CACHE_DIR', '/tmp/texrhobot-cache')
+TEXRHOBOT_FORMATS_DIR   = ENV.fetch('TEXRHOBOT_FORMATS_DIR', 'formats')
+TEXRHOBOT_TEMPLATES_DIR = ENV.fetch('TEXRHOBOT_TEMPLATES_DIR', 'templates')
 
 FileUtils.mkdir_p TEXRHOBOT_CACHE_DIR
 FileUtils.cp Dir["#{TEXRHOBOT_FORMATS_DIR}/*.fmt"], TEXRHOBOT_CACHE_DIR
@@ -16,7 +16,12 @@ def offset_line_numbers(tex_log, offset)
 end
 
 get '/' do
-  send_file 'index.html'
+  erb :index, locals: {
+    # see https://devcenter.heroku.com/articles/dyno-metadata
+    release_created_at: ENV.fetch('HEROKU_RELEASE_CREATED_AT', "YYYY-MM-DDTHH:MM:SSZ"),
+    release_version: ENV.fetch('HEROKU_RELEASE_VERSION', "v00"),
+    slug_description: ENV.fetch('HEROKU_SLUG_DESCRIPTION', "Deploy 1234567"),
+  }
 end
 
 post '/crank' do
