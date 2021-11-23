@@ -20,7 +20,7 @@ get '/' do
     # see https://devcenter.heroku.com/articles/dyno-metadata
     release_created_at: ENV.fetch('HEROKU_RELEASE_CREATED_AT', "YYYY-MM-DDTHH:MM:SSZ"),
     release_version: ENV.fetch('HEROKU_RELEASE_VERSION', "v00"),
-    slug_description: ENV.fetch('HEROKU_SLUG_DESCRIPTION', "Deploy 1234567"),
+    slug_description: ENV.fetch('HEROKU_SLUG_DESCRIPTION', "Deploy 12345678"),
   }
 end
 
