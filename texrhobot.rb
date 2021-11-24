@@ -1,5 +1,13 @@
 require 'sinatra'
 require "sinatra/cors"
+use Rack::Logger
+
+helpers do
+  def logger
+    request.logger
+  end
+end
+
 
 require 'tmpdir'
 require 'open3'
@@ -38,17 +46,21 @@ post '/crank' do
   File.write("#{TEXRHOBOT_CACHE_DIR}/#{@hash}.tex", renderer.result(binding))
 
   Dir.chdir TEXRHOBOT_CACHE_DIR do
-    stdout, _stderr, status = Open3.capture3(
+    stdout, stderr, status = Open3.capture3(
       'texfot', 'pdftex', @hash
     )
+    logger.error stderr
+    logger.info stdout
     error 400, offset_line_numbers(stdout, -2).lines[2..-1].join unless status.success?
 
-    _stdout, _stderr, status = Open3.capture3(
-      'dvisvgm', '--no-fonts', @hash
+    stdout, stderr, status = Open3.capture3(
+      'dvisvgm', '--no-fonts', '--page=1', '--output=%f.svg', @hash
     )
+    logger.error stderr
+    logger.info stdout
     error 500, 'dvisvgm crashed' unless status.success?
-  end
 
-  content_type :svg
-  halt 200, File.read("#{TEXRHOBOT_CACHE_DIR}/#{@hash}.svg")
+    content_type :svg
+    halt 200, File.read("#{@hash}.svg")
+  end
 end
