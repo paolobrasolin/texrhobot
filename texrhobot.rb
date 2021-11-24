@@ -1,4 +1,6 @@
 require 'sinatra'
+require "sinatra/cors"
+
 require 'tmpdir'
 require 'open3'
 require 'json'
@@ -15,6 +17,9 @@ def offset_line_numbers(tex_log, offset)
   tex_log.gsub(/^l.(\d+)(.*)$/) { "l.#{$1.to_i + offset}" + $2 }
 end
 
+set :allow_origin, "https://paolobrasolin.github.io/ http://localhost"
+set :allow_methods, "GET,HEAD,POST"
+
 get '/' do
   erb :index, locals: {
     # see https://devcenter.heroku.com/articles/dyno-metadata
@@ -25,8 +30,6 @@ get '/' do
 end
 
 post '/crank' do
-  headers['Access-Control-Allow-Origin'] = '*'
-
   @yaml = params.to_yaml
   @hash = Digest::MD5.hexdigest(@yaml)
   File.open("#{TEXRHOBOT_CACHE_DIR}/#{@hash}.yaml", 'w').write(@yaml)
