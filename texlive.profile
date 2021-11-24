@@ -1,4 +1,4 @@
-selected_scheme scheme-minimal
+selected_scheme scheme-small
 tlpdbopt_install_docfiles 0
 tlpdbopt_install_srcfiles 0
 tlpdbopt_autobackup 0
