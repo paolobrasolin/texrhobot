@@ -17,7 +17,7 @@ def offset_line_numbers(tex_log, offset)
   tex_log.gsub(/^l.(\d+)(.*)$/) { "l.#{$1.to_i + offset}" + $2 }
 end
 
-set :allow_origin, "https://paolobrasolin.github.io/ http://localhost"
+set :allow_origin, "https://paolobrasolin.github.io http://localhost"
 set :allow_methods, "GET,HEAD,POST"
 
 get '/' do
